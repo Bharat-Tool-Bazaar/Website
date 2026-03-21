@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bharat Tool Bazaar | Coming Soon</title>
+    <meta name="description" content="Connecting local hardware stores to nearby customers. Get tools & equipment delivered fast to commercial regions.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Background Elements for aesthetics -->
+    <div class="glow glow-1"></div>
+    <div class="glow glow-2"></div>
+    <div class="grid-overlay"></div>
+
+    <!-- Main Content -->
+    <main class="hero">
+        <div class="container">
+            <div class="hero-content fade-in-up">
+                <div class="badge">🚀 Coming Soon</div>
+                <h1 class="title">Bharat Tool <span class="accent-text">Bazaar</span></h1>
+                <p class="subtitle">
+                    The <strong>fastest</strong> way to get hardware tools & equipment delivered directly to your commercial site.
+                    Connecting local hardware stores to nearby customers seamlessly.
+                </p>
+                <div class="cta-group">
+                    <p class="cta-hint">Need something urgently right now?</p>
+                    <button class="primary-btn" id="open-whatsapp-hero">
+                        <i class="fa-brands fa-whatsapp"></i> Contact Us on WhatsApp
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Floating WhatsApp integration -->
+    <div class="whatsapp-container">
+        <!-- The form popup (hidden by default) -->
+        <div class="whatsapp-popup" id="whatsapp-popup">
+            <div class="popup-header">
+                <div class="header-left">
+                    <i class="fa-brands fa-whatsapp"></i>
+                    <h3>Send Requirements</h3>
+                </div>
+                <button class="close-btn" id="close-popup"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="popup-body">
+                <p>Tell us what hardware or tools you need, and we'll get back to you instantly.</p>
+                <form id="whatsapp-form">
+                    <textarea id="requirement-text" placeholder="E.g., I need 2 drills and a set of spanners delivered to..." required></textarea>
+                    <button type="submit" class="submit-btn">
+                        <i class="fa-solid fa-paper-plane"></i> Send to WhatsApp
+                    </button>
+                </form>
+            </div>
+        </div>
+        
+        <!-- The Floating Button -->
+        <button class="floating-wa-btn" id="floating-wa-btn" aria-label="Chat on WhatsApp">
+            <i class="fa-brands fa-whatsapp"></i>
+        </button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
