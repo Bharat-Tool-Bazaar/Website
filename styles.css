@@ -34,7 +34,9 @@ body {
     color: var(--text-primary);
     font-family: var(--font-body);
     min-height: 100vh;
+    min-height: 100dvh;
     overflow-x: hidden;
+    overflow-x: clip;
     line-height: 1.6;
     position: relative;
 }
@@ -191,13 +193,19 @@ body {
     backdrop-filter: var(--glass-blur);
     -webkit-backdrop-filter: var(--glass-blur);
     border-bottom: 1px solid var(--border);
-    padding: 1.5rem 2rem;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+    padding-left: max(2rem, env(safe-area-inset-left, 0px));
+    padding-right: max(2rem, env(safe-area-inset-right, 0px));
     position: sticky;
     top: 0;
     z-index: 100;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .header-container {
+    width: 100%;
     max-width: 1400px;
     margin: 0 auto;
     display: flex;
@@ -273,6 +281,7 @@ body {
 
 /* Marketplace Container */
 .marketplace-container {
+    width: 100%;
     max-width: 1400px;
     margin: 0 auto;
     padding: 2rem;
@@ -399,6 +408,7 @@ body {
 /* Products Section */
 .products-section {
     grid-area: products;
+    min-width: 0;
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
@@ -444,8 +454,9 @@ body {
 
 .products-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(min(200px, 100%), 1fr));
     gap: 1.5rem;
+    width: 100%;
 }
 
 .product-card {
@@ -827,13 +838,24 @@ body {
     }
 }
 
-/* AI Chatbox Styles */
+/* AI Chatbox Styles — container width matches panel so nothing clips off-screen */
 .ai-chatbox-container {
+    --chat-safe-right: max(12px, env(safe-area-inset-right, 0px));
+    --chat-safe-bottom: max(12px, env(safe-area-inset-bottom, 0px));
+    --chat-max-w: min(380px, calc(100vw - var(--chat-safe-right) - max(12px, env(safe-area-inset-left, 0px))));
+    --chat-max-w: min(380px, calc(100dvw - var(--chat-safe-right) - max(12px, env(safe-area-inset-left, 0px))));
     position: fixed;
-    bottom: 20px;
-    right: 20px;
+    bottom: var(--chat-safe-bottom);
+    right: var(--chat-safe-right);
+    left: auto;
     z-index: 2000;
     font-family: var(--font-body);
+    width: var(--chat-max-w);
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    box-sizing: border-box;
 }
 
 .ai-chat-toggle {
@@ -860,8 +882,8 @@ body {
 
 .chat-badge {
     position: absolute;
-    top: -5px;
-    right: -5px;
+    top: 2px;
+    right: 2px;
     background: #dc3545;
     color: white;
     width: 24px;
@@ -883,13 +905,15 @@ body {
 
 .chat-tooltip {
     position: absolute;
-    bottom: 75px;
-    right: -10px;
+    bottom: calc(100% + 12px);
+    right: 0;
+    left: auto;
     background: linear-gradient(135deg, rgba(249, 115, 22, 0.95), rgba(250, 204, 21, 0.85));
     color: #0b1120;
     padding: 12px 16px;
     border-radius: 12px;
-    width: 220px;
+    width: min(100%, 260px);
+    max-width: calc(100vw - var(--chat-safe-right) - max(12px, env(safe-area-inset-left, 0px)));
     font-size: 0.85rem;
     font-weight: 500;
     line-height: 1.4;
@@ -910,7 +934,7 @@ body {
 .tooltip-arrow {
     position: absolute;
     bottom: -8px;
-    right: 15px;
+    right: 18px;
     width: 0;
     height: 0;
     border-left: 10px solid transparent;
@@ -939,10 +963,16 @@ body {
 
 .ai-chat-window {
     position: absolute;
-    bottom: 80px;
+    /* Aligned above the FAB; tooltip uses the same band and is hidden when chat is open */
+    bottom: calc(100% + 14px);
     right: 0;
-    width: 380px;
-    height: 550px;
+    left: auto;
+    width: 100%;
+    max-width: 100%;
+    height: min(550px, calc(100vh - 140px));
+    height: min(550px, calc(100dvh - 140px));
+    max-height: calc(100vh - 120px);
+    max-height: calc(100dvh - 120px);
     background: var(--surface);
     backdrop-filter: var(--glass-blur);
     -webkit-backdrop-filter: var(--glass-blur);
@@ -1034,7 +1064,7 @@ body {
     border-radius: 12px;
     border-top-left-radius: 4px;
     margin: 0;
-    max-width: 280px;
+    max-width: min(280px, 85%);
     font-size: 0.95rem;
 }
 
@@ -1049,7 +1079,7 @@ body {
     border-radius: 12px;
     border-top-right-radius: 4px;
     margin: 0;
-    max-width: 280px;
+    max-width: min(280px, 85%);
     font-size: 0.95rem;
     font-weight: 500;
 }
@@ -1159,7 +1189,10 @@ body {
 
 @media (max-width: 768px) {
     .marketplace-header {
-        padding: 1rem;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+        padding-left: max(1rem, env(safe-area-inset-left, 0px));
+        padding-right: max(1rem, env(safe-area-inset-right, 0px));
     }
 
     .marketplace-container {
@@ -1168,7 +1201,7 @@ body {
     }
 
     .products-grid {
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(min(140px, 100%), 1fr));
         gap: 1rem;
     }
 
