@@ -24,30 +24,68 @@
     <main class="hero">
         <div class="container">
             <div class="hero-content fade-in-up">
-                <div class="badge">🚀 Coming Soon</div>
+                <div class="badge">�️ Tool Marketplace</div>
                 <h1 class="title">Bharat Tool <span class="accent-text">Bazaar</span></h1>
                 <p class="subtitle">
-                    The <strong>fastest</strong> way to get hardware tools & equipment delivered directly to your commercial site.
-                    Connecting local hardware stores to nearby customers seamlessly.
+                    Browse and purchase hardware tools & equipment. Add items to your cart and checkout via WhatsApp for fast delivery to your commercial site.
                 </p>
-                <div class="cta-group">
-                    <p class="cta-hint">Need something urgently right now?</p>
-                    <button class="primary-btn" id="open-whatsapp-hero">
-                        <i class="fa-brands fa-whatsapp"></i> Contact Us on WhatsApp
-                    </button>
-                </div>
             </div>
+            
+            <!-- Products Section -->
+            <section class="products-section">
+                <h2 class="section-title">Available Tools</h2>
+                <div class="products-grid" id="products-grid">
+                    <!-- Products will be dynamically added here -->
+                </div>
+            </section>
+            
+            <!-- Cart Section -->
+            <section class="cart-section">
+                <div class="cart-container">
+                    <h2 class="section-title">Your Cart</h2>
+                    <div class="cart-content">
+                        <div class="cart-items" id="cart-items">
+                            <p class="empty-cart">Your cart is empty.</p>
+                        </div>
+                        <div class="cart-summary">
+                            <div class="total-price" id="total-price">Total: ₹0</div>
+                            <button class="checkout-btn" id="checkout-btn" disabled>
+                                <i class="fa-brands fa-whatsapp"></i> Checkout via WhatsApp
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
     </main>
 
-    <!-- Floating WhatsApp integration -->
-    <div class="whatsapp-container">
-        <!-- The Floating Button -->
-        <button class="floating-wa-btn" id="floating-wa-btn" aria-label="Chat on WhatsApp">
-            <i class="fa-brands fa-whatsapp"></i>
-        </button>
-    </div>
-
     <script src="script.js"></script>
+
+    <!-- Address Modal -->
+    <div id="address-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Delivery Address</h3>
+                <button class="close-modal" id="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="address-form">
+                    <div class="form-group">
+                        <label for="delivery-address">Please enter your delivery address:</label>
+                        <textarea 
+                            id="delivery-address" 
+                            name="address" 
+                            placeholder="Enter your complete delivery address including street, city, state, and pincode..."
+                            required
+                        ></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="cancel-btn" id="cancel-address">Cancel</button>
+                        <button type="submit" class="submit-btn">Confirm & Send to WhatsApp</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
