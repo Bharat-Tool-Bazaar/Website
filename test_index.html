@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bharat Tool Bazaar | Plumbing Components Marketplace</title>
+    <meta name="description" content="One-stop marketplace for premium plumbing pipes, fittings, and components. Fast delivery to commercial regions.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Background Elements for aesthetics -->
+    <div class="glow glow-1"></div>
+    <div class="glow glow-2"></div>
+    <div class="grid-overlay"></div>
+
+    <!-- Home Page -->
+    <div id="home-page" class="page active">
+        <main class="hero">
+            <div class="container">
+                <div class="hero-content fade-in-up">
+                    <div class="badge">🚀 Premium quality tools at your doorstep</div>
+                    <h1 class="title">Bharat Tool <span class="accent-text">Bazaar</span></h1>
+                    <p class="subtitle">
+                        One stop solution for all hardware solutions and components.
+                        Plumbing fittings, pipes, valves, tools all in one place.
+                    </p>
+                    <button class="marketplace-btn" id="enter-marketplace-btn">
+                        <i class="fas fa-store"></i> Enter Marketplace
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Marketplace Page -->
+    <div id="marketplace-page" class="page">
+        <!-- Header with Cart -->
+        <header class="marketplace-header">
+            <div class="header-container">
+                <button class="home-btn" id="home-btn" title="Back to Home">
+                    <i class="fas fa-home"></i> Home
+                </button>
+                <h1 class="marketplace-title">Hardware Marketplace</h1>
+                <button class="cart-icon-btn" id="cart-icon-btn">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count" id="cart-count">0</span>
+                </button>
+            </div>
+        </header>
+
+        <div class="marketplace-container">
+            <!-- Sidebar with Categories -->
+            <aside class="categories-sidebar">
+                <h3 class="sidebar-title">Categories</h3>
+                <div class="categories-list" id="categories-list">
+                    <!-- Categories will be dynamically added here -->
+                </div>
+            </aside>
+
+            <!-- Products Section -->
+            <section class="products-section">
+                <div class="filters-header">
+                    <h2 class="section-title" id="category-title">All Products</h2>
+                    <div class="filter-controls">
+                        <select id="sort-by" class="sort-select">
+                            <option value="name">Sort by Name</option>
+                            <option value="price-low">Price: Low to High</option>
+                            <option value="price-high">Price: High to Low</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="products-grid" id="products-grid">
+                    <!-- Products will be dynamically added here -->
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Cart Panel (Slide-out) -->
+    <div id="cart-panel" class="cart-panel">
+        <div class="panel-header">
+            <h3>Your Cart</h3>
+            <button class="close-panel" id="close-cart-panel">&times;</button>
+        </div>
+        <div class="panel-body">
+            <div class="cart-items-panel" id="cart-items-panel">
+                <p class="empty-cart">Your cart is empty.</p>
+            </div>
+        </div>
+        <div class="panel-footer">
+            <div class="total-price-panel" id="total-price-panel">Total: ₹0</div>
+            <button class="proceed-btn" id="proceed-btn" disabled>
+                <i class="fas fa-arrow-right"></i> Proceed to Checkout
+            </button>
+        </div>
+    </div>
+
+    <!-- Address Modal -->
+    <div id="address-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Delivery Address</h3>
+                <button class="close-modal" id="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="address-form">
+                    <div class="form-group">
+                        <label for="delivery-address">Please enter your delivery address:</label>
+                        <textarea 
+                            id="delivery-address" 
+                            name="address" 
+                            placeholder="Enter your complete delivery address including street, city, state, and pincode..."
+                            required
+                        ></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="cancel-btn" id="cancel-address">Cancel</button>
+                        <button type="submit" class="submit-btn">Confirm & Send to WhatsApp</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Assistant Chatbox -->
+    <div class="ai-chatbox-container">
+        <!-- Floating Chat Button with Robot Icon -->
+        <button class="ai-chat-toggle" id="ai-chat-toggle" title="AI Assistant">
+            <i class="fas fa-robot"></i>
+            <span class="chat-badge" id="chat-badge">1</span>
+        </button>
+
+        <!-- Tooltip Message Bubble (appears from robot's mouth) -->
+        <div class="chat-tooltip" id="chat-tooltip">
+            <p>Hi, how can I be of assistance today? If you have any particular requests please let me know.</p>
+            <div class="tooltip-arrow"></div>
+        </div>
+
+        <!-- Chat Window -->
+        <div class="ai-chat-window" id="ai-chat-window">
+            <div class="chat-header">
+                <h3><i class="fas fa-robot"></i> AI Assistant</h3>
+                <button class="chat-close" id="ai-chat-close">&times;</button>
+            </div>
+            <div class="chat-messages" id="chat-messages">
+                <div class="message bot-message">
+                    <p>Hi, how can I be of assistance today? If you have any particular requests please let me know.</p>
+                </div>
+            </div>
+            <div class="chat-input-area">
+                <input 
+                    type="text" 
+                    id="user-message-input" 
+                    placeholder="Type your request..." 
+                    class="chat-input"
+                >
+                <button class="chat-send-btn" id="chat-send-btn">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
