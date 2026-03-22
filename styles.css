@@ -278,11 +278,67 @@ body {
     padding: 2rem;
     display: grid;
     grid-template-columns: 250px 1fr;
+    grid-template-areas:
+        "sidebar topbar"
+        "sidebar products";
     gap: 2rem;
+    align-items: start;
+}
+
+.marketplace-top-bar {
+    grid-area: topbar;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.search-input {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-family: var(--font-body);
+    min-width: min(280px, 100%);
+    flex: 1 1 220px;
+    transition: all 0.2s ease;
+}
+
+.search-input::placeholder {
+    color: var(--text-secondary);
+}
+
+.search-input:hover {
+    border-color: rgba(249, 115, 22, 0.35);
+    background: rgba(249, 115, 22, 0.06);
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: var(--accent-orange);
+    box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.12);
+}
+
+.search-input::-webkit-search-cancel-button {
+    filter: invert(0.85);
+    opacity: 0.75;
+    cursor: pointer;
+}
+
+.search-input:-webkit-autofill,
+.search-input:-webkit-autofill:hover,
+.search-input:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0 40px rgba(30, 41, 59, 0.85) inset;
+    -webkit-text-fill-color: var(--text-primary);
+    caret-color: var(--text-primary);
 }
 
 /* Categories Sidebar */
 .categories-sidebar {
+    grid-area: sidebar;
     background: var(--surface);
     backdrop-filter: var(--glass-blur);
     -webkit-backdrop-filter: var(--glass-blur);
@@ -342,6 +398,7 @@ body {
 
 /* Products Section */
 .products-section {
+    grid-area: products;
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
@@ -361,11 +418,6 @@ body {
     font-weight: 700;
     color: var(--text-primary);
     margin: 0;
-}
-
-.filter-controls {
-    display: flex;
-    gap: 1rem;
 }
 
 .sort-select {
@@ -412,6 +464,15 @@ body {
     transform: translateY(-5px);
     border-color: rgba(249, 115, 22, 0.4);
     box-shadow: 0 15px 35px rgba(249, 115, 22, 0.2);
+}
+
+.product-category-tag {
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--accent-orange);
+    margin-bottom: 0.35rem;
 }
 
 .product-name {
@@ -1070,10 +1131,29 @@ body {
 @media (max-width: 1024px) {
     .marketplace-container {
         grid-template-columns: 1fr;
+        grid-template-areas:
+            "topbar"
+            "sidebar"
+            "products";
     }
 
     .categories-sidebar {
         position: static;
+    }
+
+    .marketplace-top-bar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .marketplace-top-bar .search-input {
+        flex: none;
+        width: 100%;
+        min-width: 0;
+    }
+
+    .marketplace-top-bar .sort-select {
+        width: 100%;
     }
 }
 

@@ -68850,6 +68850,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const totalPricePanel = document.getElementById('total-price-panel');
     const proceedBtn = document.getElementById('proceed-btn');
     const sortBy = document.getElementById('sort-by');
+    const globalSearch = document.getElementById('global-search');
     const categoryTitle = document.getElementById('category-title');
     const addressModal = document.getElementById('address-modal');
     const closeModal = document.getElementById('close-modal');
@@ -68868,7 +68869,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         const firstCategory = Object.keys(productCategories)[0];
         
         if (firstCategory) {
-            renderProducts(firstCategory);
+            currentCategory = firstCategory;
+            updateProductsDisplay();
         }
         updateCart();
         attachEventListeners();
@@ -68885,9 +68887,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             btn.className = 'category-btn';
             btn.textContent = category;
             btn.addEventListener('click', () => {
-                renderProducts(category);
+                globalSearch.value = '';
+                currentCategory = category;
                 document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
+                updateProductsDisplay();
             });
             categoriesList.appendChild(btn);
         });
@@ -68895,26 +68899,45 @@ document.addEventListener('DOMContentLoaded', async () => {
         categoriesList.querySelector('.category-btn').classList.add('active');
     }
 
-    // Render Products
-    function renderProducts(category) {
-        currentCategory = category;
-        categoryTitle.textContent = category;
-        
-        if (!productCategories[category] || !productCategories[category].products) {
-            productsGrid.innerHTML = '<p style="color: var(--text-secondary);">No products available in this category.</p>';
+    function findAllMatchingProducts(rawQuery) {
+        const terms = rawQuery.trim().toLowerCase().split(/\s+/).filter(Boolean);
+        if (!terms.length) return [];
+
+        const results = [];
+        Object.keys(productCategories).forEach(category => {
+            const data = productCategories[category];
+            if (!data || !data.products) return;
+            data.products.forEach(product => {
+                const hay = `${product.name} ${product.specs}`.toLowerCase();
+                if (terms.every(term => hay.includes(term))) {
+                    results.push({ ...product, _category: category });
+                }
+            });
+        });
+        return results;
+    }
+
+    function renderProductCards(products, options = {}) {
+        const { showCategory = false, emptyMessage = 'No products to display.' } = options;
+
+        if (!products.length) {
+            productsGrid.innerHTML = `<p style="color: var(--text-secondary);">${emptyMessage}</p>`;
             return;
         }
-        
-        const products = productCategories[category].products;
+
         const sorted = sortProducts(products, sortBy.value);
-        
+
         productsGrid.innerHTML = '';
         sorted.forEach(product => {
             const card = document.createElement('div');
             card.className = 'product-card';
             const displayName = product.name.substring(0, 50) + (product.name.length > 50 ? '...' : '');
             const displaySpecs = product.specs.substring(0, 60) + (product.specs.length > 60 ? '...' : '');
+            const categoryTag = showCategory && product._category
+                ? `<p class="product-category-tag">${product._category}</p>`
+                : '';
             card.innerHTML = `
+                ${categoryTag}
                 <h3 class="product-name" title="${product.name}">${displayName}</h3>
                 <p class="product-price">₹${product.price.toFixed(2)}</p>
                 <p class="product-specs" title="${product.specs}">${displaySpecs}</p>
@@ -68924,6 +68947,36 @@ document.addEventListener('DOMContentLoaded', async () => {
             `;
             productsGrid.appendChild(card);
         });
+    }
+
+    function updateProductsDisplay() {
+        const q = globalSearch.value.trim();
+
+        if (q) {
+            const matches = findAllMatchingProducts(q);
+            categoryTitle.textContent = matches.length
+                ? `Search results (${matches.length})`
+                : `No results for "${q}"`;
+            renderProductCards(matches, {
+                showCategory: true,
+                emptyMessage: 'No products match your search. Try another keyword.'
+            });
+            return;
+        }
+
+        if (!currentCategory || !productCategories[currentCategory] || !productCategories[currentCategory].products) {
+            categoryTitle.textContent = 'All Products';
+            productsGrid.innerHTML = '<p style="color: var(--text-secondary);">No products available in this category.</p>';
+            return;
+        }
+
+        categoryTitle.textContent = currentCategory;
+        const products = productCategories[currentCategory].products;
+        if (!products.length) {
+            productsGrid.innerHTML = '<p style="color: var(--text-secondary);">No products available in this category.</p>';
+            return;
+        }
+        renderProductCards(products, { showCategory: false });
     }
 
     // Sort Products
@@ -69083,11 +69136,21 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
+    globalSearch.addEventListener('input', () => {
+        const q = globalSearch.value.trim();
+        if (!q) {
+            document.querySelectorAll('.category-btn').forEach(b => {
+                b.classList.toggle('active', b.textContent === currentCategory);
+            });
+        } else {
+            document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+        }
+        updateProductsDisplay();
+    });
+
     // Sort Change
     sortBy.addEventListener('change', () => {
-        if (currentCategory) {
-            renderProducts(currentCategory);
-        }
+        updateProductsDisplay();
     });
 
     // AI Chatbox functionality

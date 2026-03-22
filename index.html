@@ -56,6 +56,15 @@
         </header>
 
         <div class="marketplace-container">
+            <div class="marketplace-top-bar">
+                <input type="search" id="global-search" class="search-input" placeholder="Search all products, e.g. nut, ball valve 1 inch" autocomplete="off">
+                <select id="sort-by" class="sort-select">
+                    <option value="name">Sort by Name</option>
+                    <option value="price-low">Price: Low to High</option>
+                    <option value="price-high">Price: High to Low</option>
+                </select>
+            </div>
+
             <!-- Sidebar with Categories -->
             <aside class="categories-sidebar">
                 <h3 class="sidebar-title">Categories</h3>
@@ -68,14 +77,6 @@
             <section class="products-section">
                 <div class="filters-header">
                     <h2 class="section-title" id="category-title">All Products</h2>
-                    <div class="filter-controls">
-                        <input type="search" id="global-search" class="search-input" placeholder="Search products, e.g. 'ball valve 1 inch'">
-                        <select id="sort-by" class="sort-select">
-                            <option value="name">Sort by Name</option>
-                            <option value="price-low">Price: Low to High</option>
-                            <option value="price-high">Price: High to Low</option>
-                        </select>
-                    </div>
                 </div>
                 <div class="products-grid" id="products-grid">
                     <!-- Products will be dynamically added here -->
