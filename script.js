@@ -68819,7 +68819,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     products: (categoryData.products || []).map((product, index) => ({
                         id: `${category}-${index}`,
                         name: product.name,
-                        price: product.price,
+                        price: product.price * 1.10,
                         specs: product.specs || 'Not specified'
                     }))
                 };
@@ -69025,9 +69025,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             totalPricePanel.textContent = 'Total: ₹0.00';
         } else {
             cartItemsPanel.innerHTML = '';
-            let total = 0;
+            let subtotal = 0;
             cart.forEach((item, index) => {
-                total += item.price;
+                subtotal += item.price;
                 const cartItem = document.createElement('div');
                 cartItem.className = 'cart-item-panel';
                 cartItem.innerHTML = `
@@ -69039,8 +69039,29 @@ document.addEventListener('DOMContentLoaded', async () => {
                 `;
                 cartItemsPanel.appendChild(cartItem);
             });
+            
+            // Calculate discounts and delivery
+            let discountPercent = 0;
+            if (subtotal > 2000) {
+                discountPercent = 0.04;
+            } else if (subtotal > 1000) {
+                discountPercent = 0.03;
+            }
+            
+            const discountAmount = subtotal * discountPercent;
+            const deliveryFee = 100;
+            const finalTotal = subtotal - discountAmount + deliveryFee;
+
             proceedBtn.disabled = false;
-            totalPricePanel.textContent = `Total: ₹${total.toFixed(2)}`;
+            
+            let totalHtml = `<div style="font-size: 0.9rem; font-weight: normal; color: var(--text-primary);">Subtotal: ₹${subtotal.toFixed(2)}</div>`;
+            if (discountPercent > 0) {
+                totalHtml += `<div style="font-size: 0.85rem; font-weight: normal; color: #25d366; margin-top: 4px;">Discount (${discountPercent * 100}%): -₹${discountAmount.toFixed(2)}</div>`;
+            }
+            totalHtml += `<div style="font-size: 0.85rem; font-weight: normal; color: var(--text-secondary); margin-top: 4px;">Delivery Fee: +₹${deliveryFee.toFixed(2)}</div>`;
+            totalHtml += `<div style="margin-top: 8px; padding-top: 8px; border-top: 1px dashed var(--border);">Total: ₹${finalTotal.toFixed(2)}</div>`;
+            
+            totalPricePanel.innerHTML = totalHtml;
         }
     }
 
@@ -69113,14 +69134,27 @@ document.addEventListener('DOMContentLoaded', async () => {
         const address = deliveryAddress.value.trim();
         
         if (address) {
-            const total = cart.reduce((sum, item) => sum + item.price, 0);
-            let message = baseMessage;
+            const subtotal = cart.reduce((sum, item) => sum + item.price, 0);
+            let discountPercent = 0;
+            if (subtotal > 2000) discountPercent = 0.04;
+            else if (subtotal > 1000) discountPercent = 0.03;
+            
+            const discountAmount = subtotal * discountPercent;
+            const deliveryFee = 100;
+            const finalTotal = subtotal - discountAmount + deliveryFee;
+
+            let message = typeof baseMessage !== 'undefined' ? baseMessage : "Hi, Bharat Tool Bazaar I need some equipment.\n\n";
             
             cart.forEach(item => {
                 message += `- ${item.name}: ₹${item.price.toFixed(2)}\n`;
             });
             
-            message += `\n**Total: ₹${total.toFixed(2)}**\n\n`;
+            message += `\n*Subtotal: ₹${subtotal.toFixed(2)}*\n`;
+            if (discountPercent > 0) {
+                message += `*Discount (${discountPercent * 100}%): -₹${discountAmount.toFixed(2)}*\n`;
+            }
+            message += `*Delivery Fee: +₹${deliveryFee.toFixed(2)}*\n`;
+            message += `\n**Final Total: ₹${finalTotal.toFixed(2)}**\n\n`;
             message += `**Delivery Address:**\n${address}\n\n`;
             message += `Please confirm availability and delivery details.`;
             
