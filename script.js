@@ -69092,21 +69092,31 @@ document.addEventListener('DOMContentLoaded', async () => {
         marketplacePage.classList.remove('active');
         homePage.classList.add('active');
         cartPanel.classList.remove('open');
+        const chatbox = document.querySelector('.ai-chatbox-container');
+        if(chatbox) chatbox.style.display = '';
     });
 
     // Cart Panel
     cartIconBtn.addEventListener('click', () => {
         cartPanel.classList.toggle('open');
+        const chatbox = document.querySelector('.ai-chatbox-container');
+        if(chatbox) {
+            chatbox.style.display = cartPanel.classList.contains('open') ? 'none' : '';
+        }
     });
 
     closeCartPanel.addEventListener('click', () => {
         cartPanel.classList.remove('open');
+        const chatbox = document.querySelector('.ai-chatbox-container');
+        if(chatbox) chatbox.style.display = '';
     });
 
     // Proceed to Checkout
     proceedBtn.addEventListener('click', () => {
         if (cart.length > 0) {
             cartPanel.classList.remove('open');
+            const chatbox = document.querySelector('.ai-chatbox-container');
+            if(chatbox) chatbox.style.display = '';
             addressModal.classList.add('active');
             deliveryAddress.focus();
         }
